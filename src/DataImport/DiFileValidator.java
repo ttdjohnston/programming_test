@@ -12,7 +12,8 @@ public class DiFileValidator {
     private final static String FOOTER_ERROR_MSG = "The footer must contain a date in the form \"YYYYMMDD\" and the market price as a decimal separated by a comma";
     private final static int FOOTER_DATE_POSITION = 0;
     private final static int FOOTER_PRICE_POSITION = 0;
-    private final static int SIZE_OF_DATA_ROW = 5;
+
+
 
     public void validateFile(List<String> importedFile) throws InvalidFileException {
         if (importedFile.size() < (NUM_HEADER_ROWS + NUM_FOOTER_ROWS + 1)) {
@@ -25,14 +26,12 @@ public class DiFileValidator {
     }
 
     private void validateDataRows(List<String> importedFile) throws InvalidFileException {
-        for (int i = NUM_HEADER_ROWS; i < importedFile.size() - 1 - NUM_FOOTER_ROWS; i++) {
-            List<String> row = Arrays.asList(importedFile.get(i).split(","));
-            if (row.size() != SIZE_OF_DATA_ROW) {
-                throw new InvalidFileException("Data row " + i + " does not have the correct number of elements");
-            }
-
-        }
+        List<String> rows = importedFile.subList(NUM_HEADER_ROWS, importedFile.size() - (1 + NUM_FOOTER_ROWS));
+        DiDataRowValidator rowValidator = new DiDataRowValidator();
+        rowValidator.validateRows(rows);
     }
+
+
 
     private void validateFooter(List<String> importedFile) throws InvalidFileException {
         try {
