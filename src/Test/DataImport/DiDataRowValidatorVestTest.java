@@ -87,16 +87,9 @@ class DiDataRowValidatorVestTest {
         try {
             actual = validator.validateRow(row);
         } catch (Exception e) {
-            assertEquals("The vest date is invalid and must be in the form yyyyMMdd",e.getMessage());
+            assertEquals("The vest date is invalid and must be in the form yyyyMMdd", e.getMessage());
         }
-        try {
-            SimpleDateFormat _simpleDateFormatter;
-            _simpleDateFormatter = new SimpleDateFormat("yyyyMMdd");
-            _simpleDateFormatter.setLenient(false);
-            assertFalse(actual, "Found " + _simpleDateFormatter.parse("20010229").toString() + " instead of the expected");
-        } catch (Exception e) {
-
-        }
+        assertFalse(actual);
     }
 
     @org.junit.jupiter.api.Test
