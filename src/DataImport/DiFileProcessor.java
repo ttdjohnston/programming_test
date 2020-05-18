@@ -9,7 +9,7 @@ public class DiFileProcessor {
 
     }
 
-    public void processFile(List<String> importedFile) {
+    public void processFile(List<String> importedFile) throws InvalidFileException {
         _diFileValidator.validateFile(importedFile);
     }
 }
