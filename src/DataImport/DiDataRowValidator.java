@@ -8,24 +8,25 @@ public class DiDataRowValidator {
     private final static int ROW_TYPE_POS = 0;
 
 
-    public void validateRows(List<String> rows) throws InvalidFileException {
+    public boolean validateRows(List<String> rows) throws InvalidFileException {
         StringBuilder err = new StringBuilder();
-        for (int i = 0; i < rows.size() - 1; i++) {
+        for (int i = 0; i < rows.size(); i++) {
             List<String> row = Arrays.asList(rows.get(i).split(","));
             try {
                 if (DiRowType.isVest(row.get(ROW_TYPE_POS)) && row.size() == SIZE_OF_DATA_ROW) {
                     DiDataRowValidatorVest vestValidator = new DiDataRowValidatorVest();
                     vestValidator.validateRow(row);
                 } else {
-                    err.append("Data row ").append(i).append(" is incorrectly formatted \n");
+                    err.append("Data Row ").append(i+1).append(" is incorrectly formatted\n");
                 }
             } catch (InvalidRowException e) {
-                err.append("Data row ").append(i).append(": ").append(e.getMessage()).append("\n");
+                err.append("Data Row ").append(i+1).append(": ").append(e.getMessage()).append("\n");
             }
 
         }
-        if (err.length() > 0) {
+        if (err.toString().length() > 0) {
             throw new InvalidFileException(err.toString());
         }
+        return true;
     }
 }
