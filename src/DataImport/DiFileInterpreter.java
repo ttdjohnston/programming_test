@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class DiFileValidator {
+public class DiFileInterpreter {
     private final static int NUM_HEADER_ROWS = 1;
     private final static int NUM_FOOTER_ROWS = 1;
     private final static int SIZE_OF_FOOTER = 2;
@@ -15,7 +15,7 @@ public class DiFileValidator {
 
 
 
-    public void validateFile(List<String> importedFile) throws InvalidFileException {
+    public void interpretFile(List<String> importedFile) throws InvalidFileException {
         if (importedFile.size() < (NUM_HEADER_ROWS + NUM_FOOTER_ROWS + 1)) {
             throw new InvalidFileException("An import file must have the following structure: \n   Header Rows - " + NUM_HEADER_ROWS + "\n   Data Rows - >0 \n   Footer Rows - " + NUM_FOOTER_ROWS);
         }
@@ -27,8 +27,8 @@ public class DiFileValidator {
 
     private void validateDataRows(List<String> importedFile) throws InvalidFileException {
         List<String> rows = importedFile.subList(NUM_HEADER_ROWS, importedFile.size() - (1 + NUM_FOOTER_ROWS));
-        DiDataRowValidator rowValidator = new DiDataRowValidator();
-        rowValidator.validateRows(rows);
+        DiDataRowsInterpreter rowValidator = new DiDataRowsInterpreter();
+        rowValidator.interpretRows(rows);
     }
 
 

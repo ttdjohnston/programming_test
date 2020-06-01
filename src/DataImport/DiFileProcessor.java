@@ -3,13 +3,13 @@ package DataImport;
 import java.util.List;
 
 public class DiFileProcessor {
-    private DiFileValidator _diFileValidator = new DiFileValidator();
+    private DiFileInterpreter _diFileInterpreter;
 
     public DiFileProcessor() {
-
+        _diFileInterpreter = new DiFileInterpreter();
     }
 
     public void processFile(List<String> importedFile) throws InvalidFileException {
-        _diFileValidator.validateFile(importedFile);
+        _diFileInterpreter.interpretFile(importedFile);
     }
 }
