@@ -1,5 +1,7 @@
 package DataImport;
 
+import static DataImport.DiDataRowType.RowType.VEST;
+
 public class DiDataRowType {
     public enum RowType {VEST}
     private final static String VEST_STR = "VEST";
@@ -16,7 +18,7 @@ public class DiDataRowType {
 
     private RowType determineRowType(String type) {
         if (isVest(type)) {
-            return RowType.VEST;
+            return VEST;
         }
         else {
             return null;
@@ -33,6 +35,16 @@ public class DiDataRowType {
         }
         else {
             return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        switch (_type) {
+            case VEST :
+                return VEST_STR;
+            default:
+                throw new IllegalStateException("Unexpected value: " + _type);
         }
     }
 }

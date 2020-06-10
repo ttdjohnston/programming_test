@@ -1,7 +1,6 @@
 package DataImport;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class DiDataRow {
     protected DiDataRowType _type;
@@ -26,5 +25,10 @@ public class DiDataRow {
         }
         else
             return false;
+    }
+
+    @Override
+    public String toString() {
+        return _type.toString() + " " + _empNum + " " + _date.toString();
     }
 }

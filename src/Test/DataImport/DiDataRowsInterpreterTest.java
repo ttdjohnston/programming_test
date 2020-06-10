@@ -19,7 +19,7 @@ class DiDataRowsInterpreterTest {
     public void setup() {
         input = new ArrayList<>();
         input.add("VEST,EE#1,20000121,2,5.21");
-        validator = new DiDataRowsInterpreter();
+        validator = new DiDataRowsInterpreter(",");
     }
 
     @AfterEach

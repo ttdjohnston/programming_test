@@ -10,6 +10,6 @@ public class DiFileProcessor {
     }
 
     public void processFile(List<String> importedFile) throws InvalidFileException {
-        _diFileInterpreter.interpretFile(importedFile);
+        DiFile interpretFile = _diFileInterpreter.interpretFile(importedFile);
     }
 }

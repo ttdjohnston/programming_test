@@ -4,7 +4,6 @@ import DataImport.DiDataRowInterpreterVest;
 import DataImport.DiDataRowType;
 import DataImport.DiDataRowVest;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -12,16 +11,16 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DiDataRowsInterpreterVestTest {
-    DiDataRowInterpreterVest validator;
+    DiDataRowInterpreterVest interpreter;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
-        validator = new DiDataRowInterpreterVest();
+        interpreter = new DiDataRowInterpreterVest();
     }
 
     @org.junit.jupiter.api.AfterEach
     void tearDown() {
-        validator = null;
+        interpreter = null;
     }
 
     @org.junit.jupiter.api.Test
@@ -32,7 +31,7 @@ class DiDataRowsInterpreterVestTest {
         DiDataRowVest actual = null;
 
         try {
-            actual = validator.interpretRow(row);
+            actual = interpreter.interpretRow(row);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -53,7 +52,7 @@ class DiDataRowsInterpreterVestTest {
         DiDataRowVest actual = null;
 
         try {
-            actual = validator.interpretRow(row);
+            actual = interpreter.interpretRow(row);
         } catch (Exception e) {
             assertEquals("The Employee Number must not be blank",e.getMessage());
         }
@@ -67,7 +66,7 @@ class DiDataRowsInterpreterVestTest {
         DiDataRowVest actual = null;
 
         try {
-            actual = validator.interpretRow(row);
+            actual = interpreter.interpretRow(row);
         } catch (Exception e) {
             assertEquals("The vest date is invalid and must be in the form yyyyMMdd",e.getMessage());
         }
@@ -81,7 +80,7 @@ class DiDataRowsInterpreterVestTest {
         DiDataRowVest actual = null;
 
         try {
-            actual = validator.interpretRow(row);
+            actual = interpreter.interpretRow(row);
         } catch (Exception e) {
             assertEquals("The vest date is invalid and must be in the form yyyyMMdd",e.getMessage());
         }
@@ -96,7 +95,7 @@ class DiDataRowsInterpreterVestTest {
         DiDataRowVest actual = null;
 
         try {
-            actual = validator.interpretRow(row);
+            actual = interpreter.interpretRow(row);
         } catch (Exception e) {
             assertEquals("The vest date is invalid and must be in the form yyyyMMdd", e.getMessage());
         }
@@ -110,7 +109,7 @@ class DiDataRowsInterpreterVestTest {
         DiDataRowVest actual = null;
 
         try {
-            actual = validator.interpretRow(row);
+            actual = interpreter.interpretRow(row);
         } catch (Exception e) {
             assertEquals("The number of vesting units must be a positive, non-zero integer",e.getMessage());
         }
@@ -124,7 +123,7 @@ class DiDataRowsInterpreterVestTest {
         DiDataRowVest actual = null;
 
         try {
-            actual = validator.interpretRow(row);
+            actual = interpreter.interpretRow(row);
         } catch (Exception e) {
             assertEquals("The number of vesting units must be a positive, non-zero integer",e.getMessage());
         }
@@ -138,7 +137,7 @@ class DiDataRowsInterpreterVestTest {
         DiDataRowVest actual = null;
 
         try {
-            actual = validator.interpretRow(row);
+            actual = interpreter.interpretRow(row);
         } catch (Exception e) {
             assertEquals("The number of vesting units must be a positive, non-zero integer",e.getMessage());
         }
@@ -152,7 +151,7 @@ class DiDataRowsInterpreterVestTest {
         DiDataRowVest actual = null;
 
         try {
-            actual = validator.interpretRow(row);
+            actual = interpreter.interpretRow(row);
         } catch (Exception e) {
             assertEquals("The grant price must be a positive, non-zero decimal (no symbols)",e.getMessage());
         }
@@ -167,7 +166,7 @@ class DiDataRowsInterpreterVestTest {
         DiDataRowVest actual = null;
 
         try {
-            actual = validator.interpretRow(row);
+            actual = interpreter.interpretRow(row);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -187,7 +186,7 @@ class DiDataRowsInterpreterVestTest {
         DiDataRowVest actual = null;
 
         try {
-            actual = validator.interpretRow(row);
+            actual = interpreter.interpretRow(row);
         } catch (Exception e) {
             assertEquals("The number of vesting units must be a positive, non-zero integer",e.getMessage());
         }

@@ -26,4 +26,9 @@ public class DiDataRowVest extends DiDataRow {
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + " " + _unitsVested + " " + _grantPrice;
+    }
 }

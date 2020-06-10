@@ -41,7 +41,7 @@ public class DiDataRowInterpreterVest {
         }
         Integer vestingUnits;
         try {
-            vestingUnits = Integer.parseInt(row.get(NUM_UNITS_POS));
+            vestingUnits = Integer.valueOf(row.get(NUM_UNITS_POS));
             if (vestingUnits <= 0) {
                 throw new InvalidRowException(VESTING_UNITS_ERR_MSG);
             }
@@ -50,7 +50,7 @@ public class DiDataRowInterpreterVest {
         }
         Double grantPrice;
         try {
-            grantPrice = Double.parseDouble(row.get(GRANT_PRICE_POS));
+            grantPrice = Double.valueOf(row.get(GRANT_PRICE_POS));
             if (grantPrice < 0) {
                 throw new InvalidRowException(GRANT_PRICE_ERR_MSG);
             }

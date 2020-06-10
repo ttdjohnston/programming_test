@@ -7,13 +7,18 @@ import java.util.List;
 public class DiDataRowsInterpreter {
     private final static int ROW_TYPE_POS = 0;
     private final static int SIZE_OF_DATA_ROW_VEST = 5;
+    private String _deliminator;
+
+    public DiDataRowsInterpreter(String deliminator) {
+        _deliminator = deliminator;
+    }
 
 
     public List<DiDataRow> interpretRows(List<String> rows) throws InvalidFileException {
         StringBuilder err = new StringBuilder();
         List<DiDataRow> interpretedRowData = new ArrayList<>();
         for (int i = 0; i < rows.size(); i++) {
-            List<String> row = Arrays.asList(rows.get(i).split(","));
+            List<String> row = Arrays.asList(rows.get(i).split(_deliminator));
             try {
                 if (DiDataRowType.isVest(row.get(ROW_TYPE_POS)) && row.size() == SIZE_OF_DATA_ROW_VEST) {
                     DiDataRowInterpreterVest vestValidator = new DiDataRowInterpreterVest();
