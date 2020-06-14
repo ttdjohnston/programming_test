@@ -1,9 +1,10 @@
 import DataImport.DiFileProcessor;
+import DataImport.GrantEvent;
 import DataImport.InvalidFileException;
+import DataImport.ProcessedFile;
+import Test.Report.ReportGenerator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Driver {
 
@@ -11,13 +12,14 @@ public class Driver {
         List<String> importedFile = readImportFromSI();
 
         DiFileProcessor _diFileProcessor = new DiFileProcessor();
+        ProcessedFile processedFile = null;
         try {
-            _diFileProcessor.processFile(importedFile);
+            processedFile = _diFileProcessor.processFile(importedFile);
         } catch (InvalidFileException e) {
             System.out.println(e.getMessage());
             System.exit(-1);
         }
-        List<String> report = null;
+        List<String> report = (new ReportGenerator(processedFile)).generateReport();
         displayReportToSO(report);
     }
 

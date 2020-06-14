@@ -25,7 +25,7 @@ public class DiDataRowInterpreterVest {
         _dateTimeFormatter.withResolverStyle(ResolverStyle.STRICT);
     }
 
-    public DiDataRowVest interpretRow(List<String> row) throws InvalidRowException {
+    public DiDataRow interpretRow(List<String> row) throws InvalidRowException {
         if (row.get(EMPL_NUM_POS).length() == 0) {
             throw new InvalidRowException(EMPL_NUM_ERR_MSG);
         }
@@ -57,6 +57,6 @@ public class DiDataRowInterpreterVest {
         } catch (NumberFormatException e) {
             throw new InvalidRowException(GRANT_PRICE_ERR_MSG);
         }
-        return new DiDataRowVest(new DiDataRowType(row.get(ROW_TYPE_POS)), row.get(EMPL_NUM_POS), vestDate, vestingUnits, grantPrice);
+        return new DiDataRow(new DiDataRowType(row.get(ROW_TYPE_POS)), row.get(EMPL_NUM_POS), vestDate, vestingUnits, grantPrice);
     }
 }

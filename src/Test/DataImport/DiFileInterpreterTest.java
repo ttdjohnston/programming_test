@@ -36,11 +36,11 @@ public class DiFileInterpreterTest {
         importedFile.add("20120401,5.57");
 
         List<DiDataRow> rows = new ArrayList<>();
-        rows.add(new DiDataRowVest(new DiDataRowType("VEST"), "EE#1", LocalDate.of(2012,01,01), Integer.valueOf(1231), Double.valueOf(1.17)));
-        rows.add(new DiDataRowVest(new DiDataRowType("VEST"), "EE#1", LocalDate.of(2012,02,01), Integer.valueOf(987), Double.valueOf(1.67)));
-        rows.add(new DiDataRowVest(new DiDataRowType("VEST"), "EE#2", LocalDate.of(2012,03,07), Integer.valueOf(100), Double.valueOf(2.81)));
-        rows.add(new DiDataRowVest(new DiDataRowType("VEST"), "EE#3", LocalDate.of(2012,01,01), Integer.valueOf(10000), Double.valueOf(0.01)));
-        DiFile expected = new DiFile(Integer.valueOf(4), rows, new FileFooter(LocalDate.of(2012,04,01), Double.valueOf(5.57)));
+        rows.add(new DiDataRow(new DiDataRowType("VEST"), "EE#1", LocalDate.of(2012,1,1),1231, 1.17));
+        rows.add(new DiDataRow(new DiDataRowType("VEST"), "EE#1", LocalDate.of(2012,2,1), 987, 1.67));
+        rows.add(new DiDataRow(new DiDataRowType("VEST"), "EE#2", LocalDate.of(2012,3,7), 100, 2.81));
+        rows.add(new DiDataRow(new DiDataRowType("VEST"), "EE#3", LocalDate.of(2012,1,1), 10000,0.01));
+        DiFile expected = new DiFile(4, rows, new FileFooter(LocalDate.of(2012,4,1), 5.57));
 
         DiFile actual = null;
         try {

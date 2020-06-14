@@ -1,8 +1,8 @@
 package Test.DataImport;
 
+import DataImport.DiDataRow;
 import DataImport.DiDataRowInterpreterVest;
 import DataImport.DiDataRowType;
-import DataImport.DiDataRowVest;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -27,8 +27,8 @@ class DiDataRowsInterpreterVestTest {
     void validateRow_ValidRow_ReturnsTrue() {
         String rowString = "VEST,EE#1,20000121,2,5.21";
         List<String> row = Arrays.asList(rowString.split(","));
-        DiDataRowVest expected = new DiDataRowVest(new DiDataRowType(row.get(0)), row.get(1), LocalDate.of(2000, 1, 21), new Integer(row.get(3)), new Double(row.get(4)));
-        DiDataRowVest actual = null;
+        DiDataRow expected = new DiDataRow(new DiDataRowType(row.get(0)), row.get(1), LocalDate.of(2000, 1, 21), new Integer(row.get(3)), new Double(row.get(4)));
+        DiDataRow actual = null;
 
         try {
             actual = interpreter.interpretRow(row);
@@ -49,7 +49,7 @@ class DiDataRowsInterpreterVestTest {
     void validateRow_BlankEmplNum_Exception() {
         String rowString = "VEST,,20000121,2,5.21";
         List<String> row = Arrays.asList(rowString.split(","));
-        DiDataRowVest actual = null;
+        DiDataRow actual = null;
 
         try {
             actual = interpreter.interpretRow(row);
@@ -63,7 +63,7 @@ class DiDataRowsInterpreterVestTest {
     void validateRow_InvalidDate_NonDigitCharacter_Exception() {
         String rowString = "VEST,EE#1,2000&121,2,5.21";
         List<String> row = Arrays.asList(rowString.split(","));
-        DiDataRowVest actual = null;
+        DiDataRow actual = null;
 
         try {
             actual = interpreter.interpretRow(row);
@@ -77,7 +77,7 @@ class DiDataRowsInterpreterVestTest {
     void validateRow_TooManyCharactersInDate_Exception() {
         String rowString = "VEST,EE#1,200000121,2,5.21";
         List<String> row = Arrays.asList(rowString.split(","));
-        DiDataRowVest actual = null;
+        DiDataRow actual = null;
 
         try {
             actual = interpreter.interpretRow(row);
@@ -92,7 +92,7 @@ class DiDataRowsInterpreterVestTest {
     void validateRow_InvalidLeapDay_Exception() {
         String rowString = "VEST,EE#1,20010229,2,5.21";
         List<String> row = Arrays.asList(rowString.split(","));
-        DiDataRowVest actual = null;
+        DiDataRow actual = null;
 
         try {
             actual = interpreter.interpretRow(row);
@@ -106,7 +106,7 @@ class DiDataRowsInterpreterVestTest {
     void validateRow_NondigitVestingUnits_Exception() {
         String rowString = "VEST,EE#1,20000121,%,5.21";
         List<String> row = Arrays.asList(rowString.split(","));
-        DiDataRowVest actual = null;
+        DiDataRow actual = null;
 
         try {
             actual = interpreter.interpretRow(row);
@@ -120,7 +120,7 @@ class DiDataRowsInterpreterVestTest {
     void validateRow_NegativeVestingUnits_Exception() {
         String rowString = "VEST,EE#1,20000121,-3,5.21";
         List<String> row = Arrays.asList(rowString.split(","));
-        DiDataRowVest actual = null;
+        DiDataRow actual = null;
 
         try {
             actual = interpreter.interpretRow(row);
@@ -134,7 +134,7 @@ class DiDataRowsInterpreterVestTest {
     void validateRow_ZeroVestingUnits_Exception() {
         String rowString = "VEST,EE#1,20000121,0,5.21";
         List<String> row = Arrays.asList(rowString.split(","));
-        DiDataRowVest actual = null;
+        DiDataRow actual = null;
 
         try {
             actual = interpreter.interpretRow(row);
@@ -148,7 +148,7 @@ class DiDataRowsInterpreterVestTest {
     void validateRow_NegativeGrantPrice_Exception() {
         String rowString = "VEST,EE#1,20000121,2,-5.21";
         List<String> row = Arrays.asList(rowString.split(","));
-        DiDataRowVest actual = null;
+        DiDataRow actual = null;
 
         try {
             actual = interpreter.interpretRow(row);
@@ -162,8 +162,8 @@ class DiDataRowsInterpreterVestTest {
     void validateRow_ZeroGrantPrice_Valid() {
         String rowString = "VEST,EE#1,20000121,2,0.00";
         List<String> row = Arrays.asList(rowString.split(","));
-        DiDataRowVest expected = new DiDataRowVest(new DiDataRowType(row.get(0)), row.get(1), LocalDate.of(2000,1,21), new Integer(row.get(3)), new Double(row.get(4)));
-        DiDataRowVest actual = null;
+        DiDataRow expected = new DiDataRow(new DiDataRowType(row.get(0)), row.get(1), LocalDate.of(2000,1,21), new Integer(row.get(3)), new Double(row.get(4)));
+        DiDataRow actual = null;
 
         try {
             actual = interpreter.interpretRow(row);
@@ -183,7 +183,7 @@ class DiDataRowsInterpreterVestTest {
     void validateRow_GrantPriceWithDollarSign_Exception() {
         String rowString = "VEST,EE#1,20000121,0,$5.21";
         List<String> row = Arrays.asList(rowString.split(","));
-        DiDataRowVest actual = null;
+        DiDataRow actual = null;
 
         try {
             actual = interpreter.interpretRow(row);

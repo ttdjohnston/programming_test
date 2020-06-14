@@ -44,16 +44,16 @@ class DiDataRowsInterpreterTest {
         assertEquals(2000, actual.get(0).getDate().getYear());
         assertEquals(Month.JANUARY, actual.get(0).getDate().getMonth());
         assertEquals(21, actual.get(0).getDate().getDayOfMonth());
-        assertEquals(Integer.valueOf(2), ((DiDataRowVest) actual.get(0)).getUnitsVested());
-        assertEquals(Double.valueOf(5.21), ((DiDataRowVest) actual.get(0)).getGrantPrice());
+        assertEquals(new Integer(2), (actual.get(0)).getUnitsVested());
+        assertEquals(new Double(5.21), (actual.get(0)).getGrantPrice());
 
         assertEquals(new DiDataRowType("VEST"), actual.get(1).getType());
         assertEquals("EE#2", actual.get(1).getEmpNum());
         assertEquals(2000, actual.get(1).getDate().getYear());
         assertEquals(Month.JANUARY, actual.get(1).getDate().getMonth());
         assertEquals(22, actual.get(1).getDate().getDayOfMonth());
-        assertEquals(Integer.valueOf(3), ((DiDataRowVest) actual.get(1)).getUnitsVested());
-        assertEquals(Double.valueOf(5.23), ((DiDataRowVest) actual.get(1)).getGrantPrice());
+        assertEquals(new Integer(3), (actual.get(1)).getUnitsVested());
+        assertEquals(new Double(5.23), (actual.get(1)).getGrantPrice());
 
     }
 
