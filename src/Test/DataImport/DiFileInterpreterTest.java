@@ -30,16 +30,16 @@ public class DiFileInterpreterTest {
         List<String> importedFile = new ArrayList<>();
         importedFile.add("4");
         importedFile.add("VEST,EE#1,20120101,1231,1.17");
-        importedFile.add("VEST,EE#1,20120201,987,1.67");
-        importedFile.add("VEST,EE#2,20120307,100,2.81");
-        importedFile.add("VEST,EE#3,20120101,10000,0.01");
+        importedFile.add("PERF,EE#1,20120201,1.67");
+        importedFile.add("SALE,EE#1,20120307,100,2.81");
+        importedFile.add("VEST,EE#2,20120101,10000,0.01");
         importedFile.add("20120401,5.57");
 
         List<DiDataRow> rows = new ArrayList<>();
-        rows.add(new DiDataRow(new DiDataRowType("VEST"), "EE#1", LocalDate.of(2012,1,1),1231, 1.17));
-        rows.add(new DiDataRow(new DiDataRowType("VEST"), "EE#1", LocalDate.of(2012,2,1), 987, 1.67));
-        rows.add(new DiDataRow(new DiDataRowType("VEST"), "EE#2", LocalDate.of(2012,3,7), 100, 2.81));
-        rows.add(new DiDataRow(new DiDataRowType("VEST"), "EE#3", LocalDate.of(2012,1,1), 10000,0.01));
+        rows.add(DiDataRow.newBuilder().setType(new DiDataRowType("VEST")).setEmpNum("EE#1").setDate(LocalDate.of(2012,1,1)).setUnits(1231).setGrantPrice(1.17).build());
+        rows.add(DiDataRow.newBuilder().setType(new DiDataRowType("PERF")).setEmpNum("EE#1").setDate(LocalDate.of(2012,2,1)).setPerformanceMultiplier(1.67).build());
+        rows.add(DiDataRow.newBuilder().setType(new DiDataRowType("SALE")).setEmpNum("EE#1").setDate(LocalDate.of(2012,3,1)).setUnits(100).setSalePrice(2.81).build());
+        rows.add(DiDataRow.newBuilder().setType(new DiDataRowType("VEST")).setEmpNum("EE#2").setDate(LocalDate.of(2012,1,1)).setUnits(10000).setGrantPrice(0.01).build());
         DiFile expected = new DiFile(4, rows, new FileFooter(LocalDate.of(2012,4,1), 5.57));
 
         DiFile actual = null;

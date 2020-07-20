@@ -1,15 +1,28 @@
 import DataImport.DiFileProcessor;
-import DataImport.GrantEvent;
 import DataImport.InvalidFileException;
 import DataImport.ProcessedFile;
-import Test.Report.ReportGenerator;
+import Report.GrantEventException;
+import Report.ReportGenerator;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Driver {
 
     public static void main(String[] args) {
-        List<String> importedFile = readImportFromSI();
+        List<String> importedFile = new ArrayList<>();
+
+        if (args.length == 2 && "-f".equals(args[0])) {
+            try {
+                importedFile = readImportFromScanner(new Scanner(new File(args[1])));
+            } catch (FileNotFoundException e) {
+                System.out.println("Could not find file");
+                System.exit(-1);
+            }
+        } else {
+            importedFile = readImportFromSI();
+        }
 
         DiFileProcessor _diFileProcessor = new DiFileProcessor();
         ProcessedFile processedFile = null;
@@ -19,13 +32,22 @@ public class Driver {
             System.out.println(e.getMessage());
             System.exit(-1);
         }
-        List<String> report = (new ReportGenerator(processedFile)).generateReport();
-        displayReportToSO(report);
+        try {
+            List<String> report = (new ReportGenerator(processedFile)).generateReport();
+            displayReportToSO(report);
+        } catch (GrantEventException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            System.exit(-1);
+        }
     }
 
     private static List<String> readImportFromSI() {
+        return readImportFromScanner(new Scanner(System.in));
+    }
+
+    private static List<String> readImportFromScanner(Scanner scanner) {
         List<String> importedData = new ArrayList<>();
-        Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             importedData.add(scanner.nextLine());
         }
@@ -37,5 +59,9 @@ public class Driver {
         for (String line : output) {
             System.out.println(line);
         }
+    }
+
+    private static void usage() {
+        System.out.println("java -jar Driver.jar [-f inputFileName.txt]");
     }
 }
