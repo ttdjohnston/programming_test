@@ -33,10 +33,10 @@ public class ReportGenerator {
                     return (int) Math.round(o1.getUnits() * ((processedFile.getFooterPrice() - o1.getPrice())) - (o2.getUnits() * (processedFile.getFooterPrice() - o2.getPrice())));
                 }
             });
-            double eventValue;
             while (((nextEvent = orderedEvents.poll()) != null) && (nextEvent.getDate().compareTo(processedFile.getFooterDate()) < 1)) {
                 if (nextEvent.getType().isVest()) {
                     vestEventsByDate.add(nextEvent);
+                    vestEventsByValue.add(nextEvent);
                 } else if (nextEvent.getType().isPerf()) {
                     applyPerformanceMultiplier(vestEventsByDate, nextEvent);
                 } else if (nextEvent.getType().isSale()) {
@@ -45,6 +45,7 @@ public class ReportGenerator {
                     throw new GrantEventException("Could not determine the type of event");
                 }
             }
+            double eventValue;
             while (((nextEvent = vestEventsByDate.poll()) != null) && (nextEvent.getDate().compareTo(processedFile.getFooterDate()) < 1)) {
                 eventValue = nextEvent.getUnits() * (processedFile.getFooterPrice() - nextEvent.getPrice());
                 if (eventValue > 0.0)
