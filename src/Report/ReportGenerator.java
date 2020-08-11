@@ -7,7 +7,7 @@ import DataImport.ProcessedFile;
 import java.util.*;
 
 public class ReportGenerator {
-
+    String invalidSaleErrMsg = "Unable to process sale.  Not enough vested shares available";
     ProcessedFile processedFile;
 
     public ReportGenerator(ProcessedFile processedFile){
@@ -58,15 +58,44 @@ public class ReportGenerator {
 
     private void applyPerformanceMultiplier(PriorityQueue<GrantEvent> vestEventsByDate, GrantEvent perfEvent) {
         for (GrantEvent vest : vestEventsByDate) {
-            if (vest.getDate().isBefore(processedFile.getFooterDate()) || vest.getDate().isEqual(processedFile.getFooterDate())) {
-                vest.updateUnits(vest.getUnits() * perfEvent.getPerfMultiplier());
+            if (!vest.getDate().isAfter(processedFile.getFooterDate())) {
+                double newUnites = vest.getUnits() * perfEvent.getPerfMultiplier();
+                vest.updateUnits(roundHalfUp(newUnites));
             }
             else
                 break;
         }
     }
 
-    private void sellLeastProfitable(PriorityQueue<GrantEvent> vestEventsByValue, GrantEvent sellEvent) {
+    private void sellLeastProfitable(PriorityQueue<GrantEvent> vestEventsByValue, GrantEvent sellEvent) throws GrantEventException{
+        if (vestEventsByValue == null || sellEvent == null)
+            throw new GrantEventException(invalidSaleErrMsg);
+        double unitsToSell = sellEvent.getUnits();
+        for (GrantEvent nextEvent : vestEventsByValue) {
+            if (!nextEvent.getDate().isAfter(sellEvent.getDate())) {
+                if (nextEvent.getUnits() < unitsToSell) {
+                    unitsToSell -= nextEvent.getUnits();
+                    nextEvent.updateUnits(0.0);
+                }
+                else {
+                    nextEvent.updateUnits(nextEvent.getUnits() - unitsToSell);
+                    unitsToSell = 0.0;
+                }
+            }
+            if (unitsToSell == 0.0) {
+                return;
+            }
+        }
+        if (unitsToSell != 0.0) {
+            throw new GrantEventException(invalidSaleErrMsg);
+        }
+    }
 
+    private double roundHalfUp(double input) {
+        double floor = Math.floor(input);
+        if (input - floor < 0.5) {
+            return floor;
+        }
+        return floor + 1;
     }
 }
