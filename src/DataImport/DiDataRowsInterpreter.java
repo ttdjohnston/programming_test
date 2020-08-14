@@ -1,5 +1,6 @@
 package DataImport;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -89,13 +90,13 @@ public class DiDataRowsInterpreter {
         }
     }
 
-    private Double interpretGrantPrice(String price) throws InvalidRowException{
+    private BigDecimal interpretGrantPrice(String price) throws InvalidRowException{
         try {
             Double grantPrice = Double.valueOf(price);
             if (grantPrice < 0) {
                 throw new InvalidRowException(GRANT_PRICE_ERR_MSG);
             }
-            return grantPrice;
+            return BigDecimal.valueOf(grantPrice);
         } catch (NumberFormatException e) {
             throw new InvalidRowException(GRANT_PRICE_ERR_MSG);
         }
@@ -109,13 +110,13 @@ public class DiDataRowsInterpreter {
         return isValid;
     }
 
-    private Double interpretPerfMultiplier(String factor) throws InvalidRowException{
+    private BigDecimal interpretPerfMultiplier(String factor) throws InvalidRowException{
         try {
             Double multiplyer = Double.valueOf(factor);
             if (multiplyer <= 1.0) {
                 throw new InvalidRowException(PERF_MULTIPLIER_ERR_MSG);
             }
-            return multiplyer;
+            return BigDecimal.valueOf(multiplyer);
         } catch (NumberFormatException e) {
             throw new InvalidRowException(PERF_MULTIPLIER_ERR_MSG);
         }
@@ -145,13 +146,13 @@ public class DiDataRowsInterpreter {
         }
     }
 
-    private Double interpretSalePrice(String price) throws InvalidRowException{
+    private BigDecimal interpretSalePrice(String price) throws InvalidRowException{
         try {
-            Double grantPrice = Double.valueOf(price);
-            if (grantPrice <= 0) {
+            Double salePrice = Double.valueOf(price);
+            if (salePrice <= 0) {
                 throw new InvalidRowException(SALE_PRICE_ERR_MSG);
             }
-            return grantPrice;
+            return BigDecimal.valueOf(salePrice);
         } catch (NumberFormatException e) {
             throw new InvalidRowException(SALE_PRICE_ERR_MSG);
         }
@@ -163,7 +164,7 @@ public class DiDataRowsInterpreter {
         }
         LocalDate vestDate = interpretVestDate(row.get(VESTDATE_POS));
         Integer vestingUnits = interpretVestingUnits(row.get(NUM_UNITS_POS));
-        Double grantPrice = interpretGrantPrice(row.get(GRANT_PRICE_POS));
+        BigDecimal grantPrice = interpretGrantPrice(row.get(GRANT_PRICE_POS));
         return DiDataRow.newBuilder()
                 .setType(new DiDataRowType(row.get(ROW_TYPE_POS)))
                 .setEmpNum(row.get(EMPL_NUM_POS))
@@ -178,7 +179,7 @@ public class DiDataRowsInterpreter {
             throw new InvalidRowException(EMPL_NUM_ERR_MSG);
         }
         LocalDate vestDate = interpretVestDate(row.get(VESTDATE_POS));
-        Double perfMultiplier = interpretPerfMultiplier(row.get(PERFORMANCE_MULTIPLIER_POS));
+        BigDecimal perfMultiplier = interpretPerfMultiplier(row.get(PERFORMANCE_MULTIPLIER_POS));
         return DiDataRow.newBuilder()
                 .setType(new DiDataRowType(row.get(ROW_TYPE_POS)))
                 .setEmpNum(row.get(EMPL_NUM_POS))
@@ -193,7 +194,7 @@ public class DiDataRowsInterpreter {
         }
         LocalDate saleDate = interpretSaleDate(row.get(VESTDATE_POS));
         Integer saleUnits = interpretSaleUnits(row.get(NUM_UNITS_POS));
-        Double salePrice = interpretSalePrice(row.get(SALE_PRICE_POS));
+        BigDecimal salePrice = interpretSalePrice(row.get(SALE_PRICE_POS));
         return DiDataRow.newBuilder()
                 .setType(new DiDataRowType(row.get(ROW_TYPE_POS)))
                 .setEmpNum(row.get(EMPL_NUM_POS))

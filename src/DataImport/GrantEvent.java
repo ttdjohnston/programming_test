@@ -1,19 +1,21 @@
 package DataImport;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class GrantEvent {
     DiDataRowType type;
     LocalDate date;
-    Double price;
-    Double units;
-    Double perfMultiplier;
+    BigDecimal price;
+    BigDecimal units;
+    BigDecimal perfMultiplier;
 
-    public GrantEvent(DiDataRowType type, LocalDate date, Double price, Integer units, Double perfMultiplier) {
+    public GrantEvent(DiDataRowType type, LocalDate date, BigDecimal price, Integer units, BigDecimal perfMultiplier) {
         this.type = type;
         this.date = date;
         this.price = price;
-        this.units = new Double(units);
+        if (units != null)
+            this.units = new BigDecimal(units);
         this.perfMultiplier = perfMultiplier;
     }
 
@@ -25,15 +27,15 @@ public class GrantEvent {
         return date;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public Double getUnits() { return units; }
+    public BigDecimal getUnits() { return units; }
 
-    public Double getPerfMultiplier() { return perfMultiplier; }
+    public BigDecimal getPerfMultiplier() { return perfMultiplier; }
 
-    public void updateUnits(Double newUnits) { units = newUnits; }
+    public void updateUnits(BigDecimal newUnits) { units = newUnits; }
 
     public static GrantEventBuilder newBuilder() {
         return new GrantEventBuilder();
@@ -44,9 +46,9 @@ public class GrantEvent {
     public static class GrantEventBuilder {
         private DiDataRowType _type;
         private LocalDate _date;
-        private Double _price;
+        private BigDecimal _price;
         private Integer _units;
-        private Double _perfMultiplier;
+        private BigDecimal _perfMultiplier;
 
         private GrantEventBuilder() {
             _type = null;
@@ -67,7 +69,7 @@ public class GrantEvent {
             _date = date;
             return this;
         }
-        public GrantEventBuilder setPrice(Double price) {
+        public GrantEventBuilder setPrice(BigDecimal price) {
             _price = price;
             return this;
         }
@@ -75,11 +77,9 @@ public class GrantEvent {
             _units = units;
             return this;
         }
-
-        public GrantEventBuilder setPerfMultiplier(Double perfMultiplier) {
+        public GrantEventBuilder setPerfMultiplier(BigDecimal perfMultiplier) {
             _perfMultiplier = perfMultiplier;
             return this;
         }
-
     }
 }

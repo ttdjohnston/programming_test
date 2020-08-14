@@ -76,4 +76,6 @@ public class DiDataRowType implements Comparable<DiDataRowType> {
     public int compareTo(DiDataRowType o) {
         return this._type.compareTo(o._type);
     }
+
+
 }

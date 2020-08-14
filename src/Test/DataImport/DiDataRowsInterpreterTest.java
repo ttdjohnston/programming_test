@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -48,14 +49,14 @@ class DiDataRowsInterpreterTest {
         assertEquals(Month.JANUARY, actual.get(0).getDate().getMonth());
         assertEquals(21, actual.get(0).getDate().getDayOfMonth());
         assertEquals(new Integer(2), (actual.get(0)).getUnits());
-        assertEquals(new Double(5.21), (actual.get(0)).getGrantPrice());
+        assertEquals(5.21, (actual.get(0)).getGrantPrice().doubleValue());
 
         assertEquals(new DiDataRowType("PERF"), actual.get(1).getType());
         assertEquals("EE#2", actual.get(1).getEmpNum());
         assertEquals(2000, actual.get(1).getDate().getYear());
         assertEquals(Month.JANUARY, actual.get(1).getDate().getMonth());
         assertEquals(22, actual.get(1).getDate().getDayOfMonth());
-        assertEquals(new Double(1.5), (actual.get(1)).getPerformanceMultiplier());
+        assertEquals(1.5, (actual.get(1)).getPerformanceMultiplier().doubleValue());
 
         assertEquals(new DiDataRowType("SALE"), actual.get(2).getType());
         assertEquals("EE#3", actual.get(2).getEmpNum());
@@ -63,7 +64,7 @@ class DiDataRowsInterpreterTest {
         assertEquals(Month.FEBRUARY, actual.get(2).getDate().getMonth());
         assertEquals(23, actual.get(2).getDate().getDayOfMonth());
         assertEquals(new Integer(4), (actual.get(2)).getUnits());
-        assertEquals(new Double(5.24), (actual.get(2)).getSalePrice());
+        assertEquals(5.24, (actual.get(2)).getSalePrice().doubleValue());
 
     }
 
@@ -259,7 +260,7 @@ class DiDataRowsInterpreterTest {
                                                                         .setEmpNum("EE#1")
                                                                         .setDate(LocalDate.of(2000,1,21))
                                                                         .setUnits(2)
-                                                                        .setGrantPrice(0.00)
+                                                                        .setGrantPrice(BigDecimal.ZERO)
                                                                         .build());
         List<DiDataRow> actual = null;
 
@@ -268,13 +269,13 @@ class DiDataRowsInterpreterTest {
         } catch (Exception e) {
             fail(e.getMessage());
         }
-        assertEquals(expected.get(0).getType(), actual.get(0).getType());
-        assertEquals(expected.get(0).getEmpNum(), actual.get(0).getEmpNum());
-        assertEquals(expected.get(0).getDate().getYear(), actual.get(0).getDate().getYear());
-        assertEquals(expected.get(0).getDate().getMonth(), actual.get(0).getDate().getMonth());
-        assertEquals(expected.get(0).getDate().getDayOfMonth(), actual.get(0).getDate().getDayOfMonth());
-        assertEquals(expected.get(0).getUnits(), actual.get(0).getUnits());
-        assertEquals(expected.get(0).getGrantPrice(), actual.get(0).getGrantPrice());
+        assertTrue(actual.get(0).getType().isVest());
+        assertEquals("EE#1", actual.get(0).getEmpNum());
+        assertEquals(2000, actual.get(0).getDate().getYear());
+        assertEquals(Month.JANUARY, actual.get(0).getDate().getMonth());
+        assertEquals(21, actual.get(0).getDate().getDayOfMonth());
+        assertEquals(2.0, actual.get(0).getUnits().doubleValue());
+        assertEquals(0.0, actual.get(0).getGrantPrice().doubleValue());
     }
 
     @Test

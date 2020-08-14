@@ -3,6 +3,7 @@ package Test.DataImport;
 import DataImport.*;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +37,11 @@ public class DiFileInterpreterTest {
         importedFile.add("20120401,5.57");
 
         List<DiDataRow> rows = new ArrayList<>();
-        rows.add(DiDataRow.newBuilder().setType(new DiDataRowType("VEST")).setEmpNum("EE#1").setDate(LocalDate.of(2012,1,1)).setUnits(1231).setGrantPrice(1.17).build());
-        rows.add(DiDataRow.newBuilder().setType(new DiDataRowType("PERF")).setEmpNum("EE#1").setDate(LocalDate.of(2012,2,1)).setPerformanceMultiplier(1.67).build());
-        rows.add(DiDataRow.newBuilder().setType(new DiDataRowType("SALE")).setEmpNum("EE#1").setDate(LocalDate.of(2012,3,1)).setUnits(100).setSalePrice(2.81).build());
-        rows.add(DiDataRow.newBuilder().setType(new DiDataRowType("VEST")).setEmpNum("EE#2").setDate(LocalDate.of(2012,1,1)).setUnits(10000).setGrantPrice(0.01).build());
-        DiFile expected = new DiFile(4, rows, new FileFooter(LocalDate.of(2012,4,1), 5.57));
+        rows.add(DiDataRow.newBuilder().setType(new DiDataRowType("VEST")).setEmpNum("EE#1").setDate(LocalDate.of(2012,1,1)).setUnits(1231).setGrantPrice(BigDecimal.valueOf(1.17)).build());
+        rows.add(DiDataRow.newBuilder().setType(new DiDataRowType("PERF")).setEmpNum("EE#1").setDate(LocalDate.of(2012,2,1)).setPerformanceMultiplier(BigDecimal.valueOf(1.67)).build());
+        rows.add(DiDataRow.newBuilder().setType(new DiDataRowType("SALE")).setEmpNum("EE#1").setDate(LocalDate.of(2012,3,1)).setUnits(100).setSalePrice(BigDecimal.valueOf(2.81)).build());
+        rows.add(DiDataRow.newBuilder().setType(new DiDataRowType("VEST")).setEmpNum("EE#2").setDate(LocalDate.of(2012,1,1)).setUnits(10000).setGrantPrice(BigDecimal.valueOf(0.01)).build());
+        DiFile expected = new DiFile(4, rows, new FileFooter(LocalDate.of(2012,4,1), BigDecimal.valueOf(5.57)));
 
         DiFile actual = null;
         try {

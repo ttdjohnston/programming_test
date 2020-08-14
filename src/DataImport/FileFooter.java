@@ -1,18 +1,19 @@
 package DataImport;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class FileFooter {
     private LocalDate _footerDate;
-    private Double _marketPrice;
+    private BigDecimal _marketPrice;
 
-    public FileFooter(LocalDate date, Double price) {
+    public FileFooter(LocalDate date, BigDecimal price) {
         _footerDate = date;
         _marketPrice = price;
     }
 
     public LocalDate getFooterDate() { return _footerDate; }
-    public Double getMarketPrice() { return _marketPrice; }
+    public BigDecimal getMarketPrice() { return _marketPrice; }
 
     @Override
     public boolean equals(Object obj) {

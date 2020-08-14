@@ -14,12 +14,13 @@ public class DiFileProcessor {
     public ProcessedFile processFile(List<String> importedFile) throws InvalidFileException {
         DiFile interpretedFile = _diFileInterpreter.interpretFile(importedFile);
         for (DiDataRow row : interpretedFile.getDataRows()) {
-            GrantEvent event = GrantEvent.newBuilder()
-                    .setType(row.getType())
-                    .setDate(row.getDate())
-                    .setUnits(row.getUnits())
-                    .setPrice(row.getGrantPrice())
-                    .build();
+                GrantEvent event = GrantEvent.newBuilder()
+                        .setType(row.getType())
+                        .setDate(row.getDate())
+                        .setUnits(row.getUnits())
+                        .setPrice(row.getGrantPrice() != null ? row.getGrantPrice() : row.getSalePrice())
+                        .setPerfMultiplier(row.getPerformanceMultiplier())
+                        .build();
             if (_employeeEvents.get(row.getEmpNum()) == null) {
                 _employeeEvents.put(row.getEmpNum(), new PriorityQueue<>(new Comparator<GrantEvent>() {
                     @Override

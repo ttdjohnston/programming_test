@@ -1,8 +1,8 @@
 import DataImport.DiFileProcessor;
 import DataImport.InvalidFileException;
 import DataImport.ProcessedFile;
-import Report.GrantEventException;
-import Report.ReportGenerator;
+import SaleModeller.GrantEventException;
+import SaleModeller.SaleModeller;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,7 +33,7 @@ public class Driver {
             System.exit(-1);
         }
         try {
-            List<String> report = (new ReportGenerator(processedFile)).generateReport();
+            List<String> report = (new SaleModeller()).modelSaleFromFile(processedFile);
             displayReportToSO(report);
         } catch (GrantEventException e) {
             System.out.println(e.getMessage());
@@ -56,6 +56,12 @@ public class Driver {
     }
 
     private static void displayReportToSO(List<String> output) {
+        output.sort(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.compareTo(o2);
+            }
+        });
         for (String line : output) {
             System.out.println(line);
         }

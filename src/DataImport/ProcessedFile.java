@@ -1,5 +1,6 @@
 package DataImport;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -7,9 +8,9 @@ import java.util.PriorityQueue;
 public class ProcessedFile {
     Map<String, PriorityQueue<GrantEvent>> _employeeGrantEvents;
     LocalDate _footerDate;
-    Double _footerPrice;
+    BigDecimal _footerPrice;
 
-    public ProcessedFile(Map<String, PriorityQueue<GrantEvent>> employeeGrantEvents, LocalDate date, Double price){
+    public ProcessedFile(Map<String, PriorityQueue<GrantEvent>> employeeGrantEvents, LocalDate date, BigDecimal price){
         _employeeGrantEvents = employeeGrantEvents;
         _footerDate = date;
         _footerPrice = price;
@@ -23,7 +24,7 @@ public class ProcessedFile {
         return _footerDate;
     }
 
-    public Double getFooterPrice() {
+    public BigDecimal getFooterPrice() {
         return _footerPrice;
     }
 }

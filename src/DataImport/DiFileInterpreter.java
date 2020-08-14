@@ -1,5 +1,6 @@
 package DataImport;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -47,7 +48,7 @@ public class DiFileInterpreter {
             DateTimeFormatter formatter = DateTimeFormatter.BASIC_ISO_DATE;
             formatter.withResolverStyle(ResolverStyle.STRICT);
             LocalDate footerDate = LocalDate.parse(splitFooter.get(FOOTER_DATE_POSITION), formatter);
-            Double marketPrice = Double.valueOf(splitFooter.get(FOOTER_PRICE_POSITION));
+            BigDecimal marketPrice = BigDecimal.valueOf(Double.valueOf(splitFooter.get(FOOTER_PRICE_POSITION)));
             return new FileFooter(footerDate, marketPrice);
         } catch (NumberFormatException | DateTimeParseException e) {
             throw new InvalidFileException(FOOTER_ERROR_MSG);

@@ -1,4 +1,4 @@
-package Report;
+package SaleModeller;
 
 public class GrantEventException extends Exception {
     public GrantEventException(String s) {
