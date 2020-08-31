@@ -2,7 +2,7 @@ import DataImport.DiFileProcessor;
 import DataImport.InvalidFileException;
 import DataImport.ProcessedFile;
 import SaleModeller.GrantEventException;
-import SaleModeller.SaleModeller;
+import SaleModeller.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,7 +33,7 @@ public class Driver {
             System.exit(-1);
         }
         try {
-            List<String> report = (new SaleModeller()).modelSaleFromFile(processedFile);
+            Map<String, EmployeeModelResult> report = (new SaleModeller()).modelSaleFromFile(processedFile);
             displayReportToSO(report);
         } catch (GrantEventException e) {
             System.out.println(e.getMessage());
@@ -55,15 +55,19 @@ public class Driver {
         return importedData;
     }
 
-    private static void displayReportToSO(List<String> output) {
-        output.sort(new Comparator<String>() {
+    private static void displayReportToSO(Map<String, EmployeeModelResult> output) {
+        List<String> orderedEmployeeNums = new ArrayList<>();
+        orderedEmployeeNums.addAll(output.keySet());
+
+        orderedEmployeeNums.sort(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
                 return o1.compareTo(o2);
             }
         });
-        for (String line : output) {
-            System.out.println(line);
+        for (String eeNumber : orderedEmployeeNums) {
+            EmployeeModelResult result = output.get(eeNumber);
+            System.out.println(result.getEmployeeNumber() + "," + result.getTotalGainAvailable() + "," + result.getTotalGainFromSale());
         }
     }
 

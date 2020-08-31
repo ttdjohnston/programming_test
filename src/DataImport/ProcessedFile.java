@@ -27,4 +27,12 @@ public class ProcessedFile {
     public BigDecimal getFooterPrice() {
         return _footerPrice;
     }
+
+    public void setFooterDate(LocalDate date) {
+        _footerDate = date;
+    }
+
+    public void setFooterPrice(BigDecimal price) {
+        _footerPrice = price;
+    }
 }
