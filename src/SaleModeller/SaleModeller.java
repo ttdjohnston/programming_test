@@ -84,11 +84,11 @@ public class SaleModeller {
             sellUnitsAtFooterDate = sellUnitsAtFooterDate.multiply(nextPerfEvent.getPerfMultiplier());
         }
 
-        return sellEvent.getUnits().multiply(sellEvent.getPrice()).compareTo(sellUnitsAtFooterDate.multiply(footerPrice)) < 1;
+        return sellEvent.getUnits().multiply(sellEvent.getPrice()).compareTo(sellUnitsAtFooterDate.multiply(footerPrice)) > 0;
     }
 
     private BigDecimal sellAccordingToOrderedList(PriorityQueue<GrantEvent> vestEventsByValue, GrantEvent sellEvent, boolean sellLeastValuable) throws GrantEventException{
-        if (vestEventsByValue == null || sellEvent == null)
+        if (vestEventsByValue.isEmpty() || sellEvent == null)
             throw new GrantEventException(invalidSaleErrMsg);
         BigDecimal valueFromSale = BigDecimal.ZERO;
         BigDecimal unitsToSell = sellEvent.getUnits();
@@ -115,7 +115,7 @@ public class SaleModeller {
                 return valueFromSale;
             }
         }
-        if (unitsToSell.compareTo(BigDecimal.ZERO) != 0) {
+        if (unitsToSell.compareTo(BigDecimal.ZERO) == 0) {
             throw new GrantEventException(invalidSaleErrMsg);
         }
         return valueFromSale;

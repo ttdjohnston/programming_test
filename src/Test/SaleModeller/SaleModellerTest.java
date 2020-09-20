@@ -84,7 +84,7 @@ class SaleModellerTest {
     }
 
     @Test
-    public void modelSaleFromFile_vestEventsOnly_vestUnderWater(){
+    public void modelSaleFromFile_vestEventsOnly_vestUnderWater_availableValueIsZero(){
         //setup
         PriorityQueue<GrantEvent> events = file.getEmployeeGrantEvents().get(ee1Name);
         addVestEventToQueue(events,2014,6,19,2.55,150);
@@ -133,7 +133,7 @@ class SaleModellerTest {
     }
 
     @Test
-    public void modelSaleFromFile_vestAndPerfEventsOnly_perfBeforeVest_unitsUnchanged(){
+    public void modelSaleFromFile_vestAndPerfEventsOnly_perfBeforeVest_availableValueUnchanged(){
         //setup
         PriorityQueue<GrantEvent> events = file.getEmployeeGrantEvents().get(ee1Name);
         addPerfEventToQueue(events,2014,6,18,1.5);
@@ -151,6 +151,72 @@ class SaleModellerTest {
         assertEquals(ee1Name, result.get(ee1Name).getEmployeeNumber());
         assertEquals(BigDecimal.valueOf(102.00).setScale(2), result.get(ee1Name).getTotalGainAvailable());
         assertEquals(BigDecimal.ZERO.setScale(2), result.get(ee1Name).getTotalGainFromSale());
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    public void modelSaleFromFile_vestAndSaleEventsOnly_modelsCorrectly(){
+        //setup
+        PriorityQueue<GrantEvent> events = file.getEmployeeGrantEvents().get(ee1Name);
+        addVestEventToQueue(events,2014,6,19,0.55,150);
+        addSaleEventToQueue(events,2014,6,20,0.65, 70);
+
+        Map<String, EmployeeModelResult> result = null;
+        try {
+            result = saleModeller.modelSaleFromFile(file);
+        } catch (GrantEventException e) {
+            fail(e.toString());
+        }
+        if (result == null) {
+            fail("result was null");
+        }
+        assertEquals(ee1Name, result.get(ee1Name).getEmployeeNumber());
+        assertEquals(BigDecimal.valueOf(54.40).setScale(2), result.get(ee1Name).getTotalGainAvailable());
+        assertEquals(BigDecimal.valueOf(7.00).setScale(2), result.get(ee1Name).getTotalGainFromSale());
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    public void modelSaleFromFile_vestAndSaleEventsOnly_SaleBeforeVest_Exception(){
+        //setup
+        PriorityQueue<GrantEvent> events = file.getEmployeeGrantEvents().get(ee1Name);
+        addSaleEventToQueue(events,2014,6,15,0.65, 70);
+        addVestEventToQueue(events,2014,6,19,0.55,150);
+
+
+        Map<String, EmployeeModelResult> result = null;
+        try {
+            result = saleModeller.modelSaleFromFile(file);
+        } catch (GrantEventException e) {
+            assertEquals("Unable to process sale.  Not enough vested shares available", e.getMessage());
+
+        }
+        if (result != null) {
+            fail("Did not trigger GrantEventException");
+        }
+    }
+
+    @Test
+    public void modelSaleFromFile_3VestsAnd1SaleEventOnly_SellsLeastExpensiveVestBeforeSaleDate(){
+        //setup
+        PriorityQueue<GrantEvent> events = file.getEmployeeGrantEvents().get(ee1Name);
+        addVestEventToQueue(events,2014,5,18,0.50,120);
+        addVestEventToQueue(events,2014,6,19,0.55,150);
+        addSaleEventToQueue(events,2014,6,20,1.5, 70);
+        addVestEventToQueue(events,2014,7,23,0.1,80);
+
+        Map<String, EmployeeModelResult> result = null;
+        try {
+            result = saleModeller.modelSaleFromFile(file);
+        } catch (GrantEventException e) {
+            fail(e.toString());
+        }
+        if (result == null) {
+            fail("result was null");
+        }
+        assertEquals(ee1Name, result.get(ee1Name).getEmployeeNumber());
+        assertEquals(BigDecimal.valueOf(228.90).setScale(2), result.get(ee1Name).getTotalGainAvailable());
+        assertEquals(BigDecimal.valueOf(70.00).setScale(2), result.get(ee1Name).getTotalGainFromSale());
         assertEquals(1, result.size());
     }
 
@@ -173,6 +239,15 @@ class SaleModellerTest {
         events.add(GrantEvent.newBuilder()
                 .setType(new DiDataRowType("PERF"))
                 .setPerfMultiplier(BigDecimal.valueOf(multiplier))
+                .setDate(LocalDate.of(year,month,day))
+                .build());
+    }
+
+    private void addSaleEventToQueue(PriorityQueue<GrantEvent> events, int year, int month, int day, double price, int units) {
+        events.add(GrantEvent.newBuilder()
+                .setType(new DiDataRowType("SALE"))
+                .setPrice(BigDecimal.valueOf(price))
+                .setUnits(units)
                 .setDate(LocalDate.of(year,month,day))
                 .build());
     }
