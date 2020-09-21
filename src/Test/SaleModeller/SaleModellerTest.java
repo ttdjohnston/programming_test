@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -217,6 +216,79 @@ class SaleModellerTest {
         assertEquals(ee1Name, result.get(ee1Name).getEmployeeNumber());
         assertEquals(BigDecimal.valueOf(228.90).setScale(2), result.get(ee1Name).getTotalGainAvailable());
         assertEquals(BigDecimal.valueOf(70.00).setScale(2), result.get(ee1Name).getTotalGainFromSale());
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    public void modelSaleFromFile_3VestsAnd1SaleEventOnly_SellsMostExpensiveVestBeforeSaleDate(){
+        //setup
+        PriorityQueue<GrantEvent> events = file.getEmployeeGrantEvents().get(ee1Name);
+        addVestEventToQueue(events,2014,5,18,0.50,120);
+        addVestEventToQueue(events,2014,6,19,0.55,150);
+        addSaleEventToQueue(events,2014,6,20,1.05, 70);
+        addVestEventToQueue(events,2014,7,23,0.1,80);
+
+        Map<String, EmployeeModelResult> result = null;
+        try {
+            result = saleModeller.modelSaleFromFile(file);
+        } catch (GrantEventException e) {
+            fail(e.toString());
+        }
+        if (result == null) {
+            fail("result was null");
+        }
+        assertEquals(ee1Name, result.get(ee1Name).getEmployeeNumber());
+        assertEquals(BigDecimal.valueOf(232.40).setScale(2), result.get(ee1Name).getTotalGainAvailable());
+        assertEquals(BigDecimal.valueOf(35.00).setScale(2), result.get(ee1Name).getTotalGainFromSale());
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    public void modelSaleFromFile_3VestsAnd1SaleEvent_SellDrawsFromMultipleVests(){
+        //setup
+        PriorityQueue<GrantEvent> events = file.getEmployeeGrantEvents().get(ee1Name);
+        addVestEventToQueue(events,2014,5,18,0.50,30);
+        addVestEventToQueue(events,2014,6,19,0.55,20);
+        addVestEventToQueue(events,2014,6,23,0.1,20);
+        addSaleEventToQueue(events,2014,7,20,1.05, 70);
+
+        Map<String, EmployeeModelResult> result = null;
+        try {
+            result = saleModeller.modelSaleFromFile(file);
+        } catch (GrantEventException e) {
+            fail(e.toString());
+        }
+        if (result == null) {
+            fail("result was null");
+        }
+        assertEquals(ee1Name, result.get(ee1Name).getEmployeeNumber());
+        assertEquals(BigDecimal.ZERO.setScale(2), result.get(ee1Name).getTotalGainAvailable());
+        assertEquals(BigDecimal.valueOf(45.50).setScale(2), result.get(ee1Name).getTotalGainFromSale());
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    public void modelSaleFromFile_3Vests1PerfAnd1SaleEvent_PerfCausesSellMostExpensiveVestBeforeSaleDate(){
+        //setup
+        PriorityQueue<GrantEvent> events = file.getEmployeeGrantEvents().get(ee1Name);
+        addVestEventToQueue(events,2014,5,18,0.50,120);
+        addVestEventToQueue(events,2014,6,19,0.55,150);
+        addSaleEventToQueue(events,2014,6,20,1.5, 70);
+        addVestEventToQueue(events,2014,7,23,0.1,80);
+        addPerfEventToQueue(events, 2014, 7, 24, 2.0);
+
+        Map<String, EmployeeModelResult> result = null;
+        try {
+            result = saleModeller.modelSaleFromFile(file);
+        } catch (GrantEventException e) {
+            fail(e.toString());
+        }
+        if (result == null) {
+            fail("result was null");
+        }
+        assertEquals(ee1Name, result.get(ee1Name).getEmployeeNumber());
+        assertEquals(BigDecimal.valueOf(464.80).setScale(2), result.get(ee1Name).getTotalGainAvailable());
+        assertEquals(BigDecimal.valueOf(66.50).setScale(2), result.get(ee1Name).getTotalGainFromSale());
         assertEquals(1, result.size());
     }
 
